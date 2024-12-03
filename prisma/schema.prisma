@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Anggota {
+  id               Int             @id @default(autoincrement())
+  kategori         Kategori        @default(SISWA)
+  name             String
+  nip              String?
+  nipd             String?
+  nisn             String?
+  foto             String?
+  kelas            Kelas           @default(X)
+  jurusan          String?
+  status_anggota   StatusAnggota   @default(AKTIF)
+  status_sumbangan StatusSumbangan @default(BELUM)
+}
+
+enum Kelas {
+  X
+  XI
+  XII
+  LULUS
+}
+
+enum Kategori {
+  SISWA
+  GURU
+}
+
+enum StatusAnggota {
+  AKTIF
+  TIDAK_AKTIF
+}
+
+enum StatusSumbangan {
+  BELUM
+  SUDAH
+  BUKAN_PENYUMBANG
+}
+
+model Buku{
+  id              Int @id  @default(autoincrement())
+  judul           String
+  pengarang       String?
+  penerbit        String?
+  isbn            String?
+  deskripsi_fisik String?
+  foto            String?
+  tahun_masuk     DateTime?
+  sumber_dana     String?
+  harga           Float?
+  letak_buku      String?
+  dibuat          DateTime @default(now())
+  diperbarui      DateTime @updatedAt
+}
+
+model Eksemplar{
+  id              Int @id @default(autoincrement())
+  buku_id         Int @relation(fields: [buku_id], references: [id])
+  buku            Buku @relation(fields: [buku_id], references: [id])
+  
+}
