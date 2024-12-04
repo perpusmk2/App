@@ -1,25 +1,20 @@
-import express from "express";
-import { PrismaClient } from "@prisma/client";
+const express = require("express");
+const { PrismaClient } = require("@prisma/client");
+const router = require("./src/routes");
+const app = express();
 const prisma = new PrismaClient();
-
 const PORT = process.env.PORT || 3000;
 
-const app = express();
-
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello from index!");
 });
+app.use(router);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port http://localhost:${PORT}`);
 });
 
-async function main() {
-  const eksemplar = await prisma.eksemplar.findMany({
-    where: { buku_id: 1 },
-  });
-  console.log(eksemplar);
-}
+async function main() {}
 main()
   .then(async () => {
     await prisma.$disconnect();
