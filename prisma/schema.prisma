@@ -23,6 +23,7 @@ model Anggota {
   foto             String?
   kelas            Kelas           @default(X)
   jurusan          String?
+  peminjaman       Peminjaman[]
   status_anggota   StatusAnggota   @default(AKTIF)
   status_sumbangan StatusSumbangan @default(BELUM)
 }
@@ -32,6 +33,7 @@ enum Kelas {
   XI
   XII
   LULUS
+  BUKAN_SISWA
 }
 
 enum Kategori {
@@ -57,18 +59,61 @@ model Buku{
   penerbit        String?
   isbn            String?
   deskripsi_fisik String?
+  subjek          String?
   foto            String?
   tahun_masuk     DateTime?
   sumber_dana     String?
   harga           Float?
   letak_buku      String?
+  eksemplar       Eksemplar[]
+  peminjaman      Peminjaman[]
   dibuat          DateTime @default(now())
   diperbarui      DateTime @updatedAt
 }
 
 model Eksemplar{
-  id              Int @id @default(autoincrement())
-  buku_id         Int @relation(fields: [buku_id], references: [id])
-  buku            Buku @relation(fields: [buku_id], references: [id])
-  
+  id           Int @id @default(autoincrement())
+  buku         Buku @relation(fields: [buku_id], references: [id])
+  buku_id      Int
+  status_buku  StatusBuku @default(TERSEDIA)
+  keterangan   String?
+  foto_bukti   String?
+  detailPinjam DetailPeminjaman[]
+  dibuat       DateTime @default(now())
+  diperbarui   DateTime @updatedAt
+}
+
+enum StatusBuku {
+  TERSEDIA
+  DIPINJAM
+  RUSAK
+  HILANG
+}
+
+model Peminjaman{
+  id            Int @id @default(autoincrement())
+  anggota       Anggota @relation(fields: [anggota_id], references: [id])
+  anggota_id    Int
+  buku          Buku @relation(fields: [buku_id], references: [id])
+  buku_id       Int
+  status_pinjam StatusPinjam @default(PINJAM)
+  detailPinjam  DetailPeminjaman[]
+  dibuat        DateTime @default(now())
+  diperbarui    DateTime @updatedAt
+}
+
+enum StatusPinjam {
+  PINJAM
+  KEMBALI
+  BATAL
+}
+
+model DetailPeminjaman{
+  id            Int @id @default(autoincrement())
+  peminjaman    Peminjaman @relation(fields: [peminjaman_id], references: [id])
+  peminjaman_id Int
+  eksemplar     Eksemplar @relation(fields: [eksemplar_id], references: [id])
+  eksemplar_id  Int
+  dibuat        DateTime @default(now())
+  diperbarui    DateTime @updatedAt
 }

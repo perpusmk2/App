@@ -7,10 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/index.mjs"
   },
+  "prisma": {
+    "seed": "node prisma/seed.mjs"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.0.1",
     "express": "^4.21.1"
   },
   "devDependencies": {
