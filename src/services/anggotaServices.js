@@ -6,4 +6,14 @@ const getAllAnggota = async () => {
   return data;
 };
 
-module.exports = { getAllAnggota };
+const getAnggotaById = async (id) => {
+  const data = await prisma.anggota.findUnique({ where: { id } });
+  return data;
+};
+``;
+const createAnggota = async (data) => {
+  const anggota = await prisma.anggota.create({ data });
+  return anggota;
+};
+
+module.exports = { getAllAnggota, getAnggotaById, createAnggota };
