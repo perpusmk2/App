@@ -16,17 +16,39 @@ datasource db {
 model Anggota {
   id               Int             @id @default(autoincrement())
   kategori         Kategori        @default(SISWA)
-  name             String
-  nip              String?
-  nipd             String?
-  nisn             String?
+  nama             String
+  username         String
+  password         String
   foto             String?
-  kelas            Kelas           @default(X)
-  jurusan          String?
   peminjaman       Peminjaman[]
+  guru             Guru?
+  siswa            Siswa?
   status_anggota   StatusAnggota   @default(AKTIF)
-  status_sumbangan StatusSumbangan @default(BELUM)
+  dibuat           DateTime        @default(now())
+  diperbarui       DateTime        @updatedAt
 }
+
+model Guru{
+  id            Int       @id @default(autoincrement())
+  anggota       Anggota   @relation(fields: [anggota_id], references: [id])
+  anggota_id    Int       @unique
+  nip           String?
+  dibuat        DateTime  @default(now())
+  diperbarui    DateTime  @updatedAt
+}
+
+model Siswa{
+  id                Int @id          @default(autoincrement())
+  anggota           Anggota          @relation(fields: [anggota_id], references: [id])
+  anggota_id        Int              @unique
+  nisn              String?  
+  nipd              String?  
+  kelas             Kelas            @default(X)
+  jurusan           String?  
+  status_sumbangan  StatusSumbangan  @default(BELUM)
+  dibuat            DateTime         @default(now())
+  diperbarui        DateTime         @updatedAt
+} 
 
 enum Kelas {
   X
@@ -39,6 +61,7 @@ enum Kelas {
 enum Kategori {
   SISWA
   GURU
+  ADMIN
 }
 
 enum StatusAnggota {
@@ -53,34 +76,58 @@ enum StatusSumbangan {
 }
 
 model Buku{
-  id              Int @id  @default(autoincrement())
-  judul           String
-  pengarang       String?
-  penerbit        String?
-  isbn            String?
-  deskripsi_fisik String?
-  subjek          String?
-  foto            String?
-  tahun_masuk     DateTime?
-  sumber_dana     String?
-  harga           Float?
-  letak_buku      String?
-  eksemplar       Eksemplar[]
-  peminjaman      Peminjaman[]
-  dibuat          DateTime @default(now())
-  diperbarui      DateTime @updatedAt
+  id                Int @id       @default(autoincrement())
+  judul             String
+  pengarang         String?
+  penerbit          String?
+  isbn              String?
+  deskripsi_fisik   String?
+  tahun_masuk       DateTime?
+  eksemplar         Eksemplar[]
+  bukuTag           BukuTag[]
+  fotoBuku          FotoBuku[]
+  dibuat            DateTime      @default(now())
+  diperbarui        DateTime      @updatedAt
+}
+
+model FotoBuku{
+  id        Int @id   @default(autoincrement())
+  buku      Buku      @relation(fields: [buku_id], references: [id])
+  buku_id   Int
+  foto      String
+  tipe      TipeFoto  @default(SAMPUL)
+}
+
+enum TipeFoto{
+  SAMPUL
+  DAFTAR_ISI
+  SAMPUL_BELAKANG
+}
+
+model Tag{
+  id        Int         @id @default(autoincrement())
+  nama      String
+  bukuTag   BukuTag[]
+}
+
+model BukuTag{
+  id        Int     @id @default(autoincrement())
+  buku      Buku    @relation(fields: [buku_id], references: [id])
+  buku_id   Int
+  tag       Tag     @relation(fields: [tag_id], references: [id])
+  tag_id    Int
 }
 
 model Eksemplar{
-  id           Int @id @default(autoincrement())
-  buku         Buku @relation(fields: [buku_id], references: [id])
-  buku_id      Int
-  status_buku  StatusBuku @default(TERSEDIA)
-  keterangan   String?
-  foto_bukti   String?
-  detailPinjam DetailPeminjaman[]
-  dibuat       DateTime @default(now())
-  diperbarui   DateTime @updatedAt
+  id                Int                   @id @default(autoincrement())
+  buku              Buku                  @relation(fields: [buku_id], references: [id])
+  buku_id           Int 
+  status_buku       StatusBuku            @default(TERSEDIA)
+  keterangan        String? 
+  foto_bukti        String? 
+  detailTransaksi   DetailTransaksi?
+  dibuat            DateTime              @default(now())
+  diperbarui        DateTime              @updatedAt
 }
 
 enum StatusBuku {
@@ -91,29 +138,27 @@ enum StatusBuku {
 }
 
 model Peminjaman{
-  id            Int @id @default(autoincrement())
-  anggota       Anggota @relation(fields: [anggota_id], references: [id])
-  anggota_id    Int
-  buku          Buku @relation(fields: [buku_id], references: [id])
-  buku_id       Int
-  status_pinjam StatusPinjam @default(PINJAM)
-  detailPinjam  DetailPeminjaman[]
-  dibuat        DateTime @default(now())
-  diperbarui    DateTime @updatedAt
+  id              Int                 @id @default(autoincrement())
+  anggota         Anggota             @relation(fields: [anggota_id], references: [id])
+  anggota_id      Int 
+  status_pinjam   Status_pinjam       @default(PINJAM)
+  detailPinjam    DetailTransaksi[]  
+  dibuat          DateTime            @default(now())
+  diperbarui      DateTime            @updatedAt
 }
 
-enum StatusPinjam {
+enum Status_pinjam {
   PINJAM
   KEMBALI
   BATAL
 }
 
-model DetailPeminjaman{
-  id            Int @id @default(autoincrement())
-  peminjaman    Peminjaman @relation(fields: [peminjaman_id], references: [id])
-  peminjaman_id Int
-  eksemplar     Eksemplar @relation(fields: [eksemplar_id], references: [id])
-  eksemplar_id  Int
-  dibuat        DateTime @default(now())
-  diperbarui    DateTime @updatedAt
+model DetailTransaksi{
+  id              Int           @id @default(autoincrement())
+  peminjaman      Peminjaman    @relation(fields: [peminjaman_id], references: [id])
+  peminjaman_id   Int   
+  eksemplar       Eksemplar     @relation(fields: [eksemplar_id], references: [id])
+  eksemplar_id    Int           @unique
+  dibuat          DateTime      @default(now())
+  diperbarui      DateTime      @updatedAt
 }

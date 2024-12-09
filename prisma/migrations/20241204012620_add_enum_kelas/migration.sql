@@ -1,2 +1,0 @@
--- AlterEnum
-ALTER TYPE "Kelas" ADD VALUE 'BUKAN_SISWA';
