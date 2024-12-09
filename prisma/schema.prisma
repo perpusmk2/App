@@ -17,9 +17,10 @@ model Anggota {
   id               Int             @id @default(autoincrement())
   kategori         Kategori        @default(SISWA)
   nama             String
-  username         String
-  password         String
+  username         String?
+  password         String?
   foto             String?
+  telepon          String?
   peminjaman       Peminjaman[]
   guru             Guru?
   siswa            Siswa?
