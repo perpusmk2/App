@@ -48,6 +48,20 @@ async function main() {
 
   await prisma.guru.createMany({ data: guru });
 
+  const tag = [
+    {
+      nama: "Tag 1",
+    },
+    {
+      nama: "Tag 2",
+    },
+    {
+      nama: "Tag 3",
+    },
+  ];
+
+  await prisma.tag.createMany({ data: tag });
+
   await prisma.buku.create({
     data: {
       judul: "Buku 1",
@@ -58,6 +72,32 @@ async function main() {
       eksemplar: {
         createMany: {
           data: [{}, {}, {}],
+        },
+      },
+      fotoBuku: {
+        createMany: {
+          data: [
+            {
+              foto: "buku1.jpg",
+            },
+            {
+              foto: "buku2.jpg",
+              tipe: "DAFTAR_ISI",
+            },
+            {
+              foto: "buku3.jpg",
+              tipe: "SAMPUL_BELAKANG",
+            },
+          ],
+        },
+      },
+      bukuTag: {
+        create: {
+          tag: {
+            connect: {
+              id: 3,
+            },
+          },
         },
       },
     },

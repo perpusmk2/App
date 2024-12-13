@@ -6,14 +6,28 @@ const getAllAnggota = async () => {
   return data;
 };
 
-const getAnggotaById = async (id) => {
-  const data = await prisma.anggota.findUnique({ where: { id } });
+const getAnggotaById = async (params) => {
+  const id = params;
+  const data = await prisma.anggota.findUnique({
+    where: { id },
+    include: { siswa: true, guru: true },
+  });
   return data;
 };
-``;
+
 const createAnggota = async (data) => {
   const anggota = await prisma.anggota.create({ data });
   return anggota;
 };
 
-module.exports = { getAllAnggota, getAnggotaById, createAnggota };
+const updateAnggota = async (id, data) => {
+  const anggota = await prisma.anggota.update({ where: { id }, data });
+  return anggota;
+};
+
+module.exports = {
+  getAllAnggota,
+  getAnggotaById,
+  createAnggota,
+  updateAnggota,
+};
