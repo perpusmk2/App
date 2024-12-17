@@ -15,14 +15,21 @@ const getAnggotaById = async (params) => {
   return data;
 };
 
-const createAnggota = async (data) => {
-  const anggota = await prisma.anggota.create({ data });
+const createAnggota = async (params) => {
+  const anggota = await prisma.anggota.create({ params });
   return anggota;
 };
 
-const updateAnggota = async (id, data) => {
-  const anggota = await prisma.anggota.update({ where: { id }, data });
-  return anggota;
+const updateAnggota = async (params) => {
+  const { id, body } = params;
+  console.log(body);
+  console.log(id);
+
+  const data = await prisma.anggota.update({
+    where: { id: +id },
+    data: body,
+  });
+  return data;
 };
 
 module.exports = {

@@ -41,9 +41,15 @@ const createAnggota = async (req, res, next) => {
 
 const updateAnggota = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const data = await anggotaServices.updateAnggota(+id, req.body);
-    res.status(200).json(data);
+    const id = req.params;
+    const body = req.body;
+    if ("guru" in body) {
+      console.log(body.guru);
+    } else if ("siswa" in body) {
+      console.log(body.siswa);
+    }
+    // const data = await anggotaServices.updateAnggota();
+    // res.status(200).json(data);
   } catch (err) {
     next(err);
   }
@@ -53,4 +59,5 @@ module.exports = {
   getAllAnggota,
   getAnggotaById,
   createAnggota,
+  updateAnggota,
 };
