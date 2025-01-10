@@ -15,6 +15,7 @@ async function main() {
       password: "$2a$10$FlocnMGFAEPaJIw93pazneuy7ZpmdyEwuH1tm/kG74jHOVxiFotGy",
       telepon: "08123456789",
       foto: "siswa.png",
+      nomor_induk: "1234567890",
     },
     {
       nama: "Anggota 2",
@@ -23,30 +24,11 @@ async function main() {
       password: "$2a$10$FlocnMGFAEPaJIw93pazneuy7ZpmdyEwuH1tm/kG74jHOVxiFotGy",
       telepon: "082123456789",
       foto: "guru.png",
+      nomor_induk: "1234567891",
     },
   ];
 
   await prisma.anggota.createMany({ data: anggota });
-
-  const siswa = [
-    {
-      anggota_id: 2,
-      nisn: "1234567890",
-      nipd: "1234567890",
-      jurusan: "DKV",
-    },
-  ];
-
-  await prisma.siswa.createMany({ data: siswa });
-
-  const guru = [
-    {
-      anggota_id: 3,
-      nip: "1234567890",
-    },
-  ];
-
-  await prisma.guru.createMany({ data: guru });
 
   const tag = [
     {
@@ -62,16 +44,59 @@ async function main() {
 
   await prisma.tag.createMany({ data: tag });
 
-  await prisma.buku.create({
-    data: {
+  const Penerbit = [
+    {
+      nama: "Penerbit 1",
+    },
+    {
+      nama: "Penerbit 2",
+    },
+    {
+      nama: "Penerbit 3",
+    },
+  ];
+
+  await prisma.penerbit.createMany({ data: Penerbit });
+
+  const sumberDana = [
+    {
+      nama: "Sumber Dana 1",
+    },
+    {
+      nama: "Sumber Dana 2",
+    },
+    {
+      nama: "Sumber Dana 3",
+    },
+  ];
+
+  await prisma.sumberDana.createMany({ data: sumberDana });
+
+  const buku = [
+    {
       judul: "Buku 1",
       pengarang: "Pengarang 1",
-      penerbit: "Penerbit 1",
+      penerbit_id: 1,
       isbn: "1234567890",
+      tahun_terbit: "2020",
+      harga: 10000,
+      sumber_dana_id: 1,
       deskripsi_fisik: "Deskripsi fisik buku 1",
       eksemplar: {
         createMany: {
-          data: [{}, {}, {}],
+          data: [{}],
+        },
+      },
+      bukuTag: {
+        createMany: {
+          data: [
+            {
+              tag_id: 1,
+            },
+            {
+              tag_id: 2,
+            },
+          ],
         },
       },
       fotoBuku: {
@@ -91,17 +116,104 @@ async function main() {
           ],
         },
       },
+    },
+    {
+      judul: "Buku 2",
+      pengarang: "Pengarang 2",
+      penerbit_id: 2,
+      isbn: "1234567891",
+      tahun_terbit: "2021",
+      harga: 20000,
+      sumber_dana_id: 2,
+      deskripsi_fisik: "Deskripsi fisik buku 2",
+      eksemplar: {
+        createMany: {
+          data: [{}, {}],
+        },
+      },
       bukuTag: {
-        create: {
-          tag: {
-            connect: {
-              id: 3,
+        createMany: {
+          data: [
+            {
+              tag_id: 2,
             },
-          },
+            {
+              tag_id: 3,
+            },
+          ],
+        },
+      },
+      fotoBuku: {
+        createMany: {
+          data: [
+            {
+              foto: "buku4.jpg",
+            },
+            {
+              foto: "buku5.jpg",
+              tipe: "DAFTAR_ISI",
+            },
+            {
+              foto: "buku5.jpg",
+              tipe: "DAFTAR_ISI",
+            },
+            {
+              foto: "buku6.jpg",
+              tipe: "SAMPUL_BELAKANG",
+            },
+          ],
         },
       },
     },
-  });
+    {
+      judul: "Buku 3",
+      pengarang: "Pengarang 3",
+      isbn: "1234567892",
+      tahun_terbit: "2022",
+      harga: 30000,
+      sumber_dana_id: 3,
+      deskripsi_fisik: "Deskripsi fisik buku 3",
+      eksemplar: {
+        createMany: {
+          data: [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+        },
+      },
+      bukuTag: {
+        createMany: {
+          data: [
+            {
+              tag_id: 3,
+            },
+          ],
+        },
+      },
+      fotoBuku: {
+        createMany: {
+          data: [
+            {
+              foto: "buku7.jpg",
+            },
+            {
+              foto: "buku8.jpg",
+              tipe: "DAFTAR_ISI",
+            },
+            {
+              foto: "buku9.jpg",
+              tipe: "DAFTAR_ISI",
+            },
+            {
+              foto: "buku10.jpg",
+              tipe: "SAMPUL_BELAKANG",
+            },
+          ],
+        },
+      },
+    },
+  ];
+
+  for (const b of buku) {
+    await prisma.buku.create({ data: b });
+  }
 }
 
 main();

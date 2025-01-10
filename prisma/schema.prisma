@@ -17,46 +17,16 @@ model Anggota {
   id               Int             @id @default(autoincrement())
   kategori         Kategori        @default(SISWA)
   nama             String
-  username         String          @unique
+  username         String?          @unique
   password         String?
   foto             String?
   telepon          String?
+  nomor_induk      String?
   peminjaman       Peminjaman[]
-  guru             Guru?
-  siswa            Siswa?
   status_anggota   StatusAnggota   @default(AKTIF)
+  bukuSumbangan    BukuSumbangan[]
   dibuat           DateTime        @default(now())
   diperbarui       DateTime        @updatedAt
-}
-
-model Guru{
-  id            Int       @id @default(autoincrement())
-  anggota       Anggota   @relation(fields: [anggota_id], references: [id])
-  anggota_id    Int       @unique
-  nip           String?
-  dibuat        DateTime  @default(now())
-  diperbarui    DateTime  @updatedAt
-}
-
-model Siswa{
-  id                Int @id          @default(autoincrement())
-  anggota           Anggota          @relation(fields: [anggota_id], references: [id])
-  anggota_id        Int              @unique
-  nisn              String?  
-  nipd              String?  
-  kelas             Kelas            @default(X)
-  jurusan           String?  
-  status_sumbangan  StatusSumbangan  @default(BELUM)
-  dibuat            DateTime         @default(now())
-  diperbarui        DateTime         @updatedAt
-} 
-
-enum Kelas {
-  X
-  XI
-  XII
-  LULUS
-  BUKAN_SISWA
 }
 
 enum Kategori {
@@ -70,18 +40,18 @@ enum StatusAnggota {
   TIDAK_AKTIF
 }
 
-enum StatusSumbangan {
-  BELUM
-  SUDAH
-  BUKAN_PENYUMBANG
-}
-
 model Buku{
   id                Int @id       @default(autoincrement())
+  nomor_induk       String?
   judul             String
   pengarang         String?
-  penerbit          String?
+  penerbit          Penerbit?      @relation(fields: [penerbit_id], references: [id])
+  penerbit_id       Int?
   isbn              String?
+  tahun_terbit      String?
+  harga             Int
+  sumber_dana       SumberDana    @relation(fields: [sumber_dana_id], references: [id])
+  sumber_dana_id    Int 
   deskripsi_fisik   String?
   tahun_masuk       DateTime?
   eksemplar         Eksemplar[]
@@ -89,6 +59,12 @@ model Buku{
   fotoBuku          FotoBuku[]
   dibuat            DateTime      @default(now())
   diperbarui        DateTime      @updatedAt
+}
+
+model SumberDana{
+  id        Int         @id @default(autoincrement())
+  nama      String
+  buku      Buku[]
 }
 
 model FotoBuku{
@@ -117,6 +93,12 @@ model BukuTag{
   buku_id   Int
   tag       Tag     @relation(fields: [tag_id], references: [id])
   tag_id    Int
+}
+
+model Penerbit{
+  id        Int         @id @default(autoincrement())
+  nama      String
+  buku      Buku[]
 }
 
 model Eksemplar{
@@ -162,4 +144,11 @@ model DetailTransaksi{
   eksemplar_id    Int           @unique
   dibuat          DateTime      @default(now())
   diperbarui      DateTime      @updatedAt
+}
+
+model BukuSumbangan{
+  id              Int         @id @default(autoincrement())
+  anggota         Anggota     @relation(fields: [anggota_id], references: [id])
+  anggota_id      Int
+  judul           String
 }
