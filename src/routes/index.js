@@ -7,4 +7,7 @@ router.use("/api/anggota", anggotaRoute);
 const tagRoute = require("./tagRoutes");
 router.use("/api/tag", tagRoute);
 
+const sumberRoute = require("./sumberRoutes");
+router.use("/api/sumber", sumberRoute);
+
 module.exports = router;

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const getAllTag = async () => {
   const data = await prisma.tag.findMany({});
   if (!data) {
-    throw { name: "ErrorNotFound", message: "database is empty" };
+    throw { name: "ErrorNotFound", message: "table is empty" };
   }
   return data;
 };
@@ -22,7 +22,10 @@ const createTag = async (params) => {
   const data = await getAllTag();
   for (let d of data) {
     if (d.nama.toLocaleLowerCase() === params.nama.toLocaleLowerCase()) {
-      throw { name: "DataExist", message: "Data already exist" };
+      throw {
+        name: "DataExist",
+        message: "Data already exist, please use another name",
+      };
     }
   }
   const tag = await prisma.tag.create({ data: params });
@@ -31,11 +34,14 @@ const createTag = async (params) => {
 
 const updateTag = async (params) => {
   const { id, body } = params;
-
+  await getTagById(id);
   const data = await getAllTag();
   for (let d of data) {
     if (d.nama.toLocaleLowerCase() === body.nama.toLocaleLowerCase()) {
-      throw { name: "DataExist", message: "Data with this name already exist" };
+      throw {
+        name: "DataExist",
+        message: "Data already exist, please use another name",
+      };
     }
   }
   const tag = await prisma.tag.update({
