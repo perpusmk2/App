@@ -13,4 +13,7 @@ router.use("/api/sumber", sumberRoute);
 const penerbitRoute = require("./penerbitRoutes");
 router.use("/api/penerbit", penerbitRoute);
 
+const sumbanganRoute = require("./sumbanganRoutes");
+router.use("/api/sumbangan", sumbanganRoute);
+
 module.exports = router;
