@@ -26,6 +26,12 @@ async function main() {
       foto: "guru.png",
       nomor_induk: "1234567891",
     },
+    {
+      nama: "Anggota 3",
+      telepon: "083123456789",
+      foto: "siswa2.png",
+      nomor_induk: "1234567892",
+    },
   ];
 
   await prisma.anggota.createMany({ data: anggota });
@@ -214,6 +220,19 @@ async function main() {
   for (const b of buku) {
     await prisma.buku.create({ data: b });
   }
+
+  const sumbangan = [
+    {
+      anggota_id: 2,
+      judul: "Buku 2002",
+    },
+    {
+      anggota_id: 4,
+      judul: "Buku 2004",
+    },
+  ];
+
+  await prisma.bukuSumbangan.createMany({ data: sumbangan });
 }
 
 main();
