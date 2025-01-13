@@ -10,4 +10,7 @@ router.use("/api/tag", tagRoute);
 const sumberRoute = require("./sumberRoutes");
 router.use("/api/sumber", sumberRoute);
 
+const penerbitRoute = require("./penerbitRoutes");
+router.use("/api/penerbit", penerbitRoute);
+
 module.exports = router;
