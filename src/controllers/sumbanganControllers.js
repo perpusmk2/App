@@ -22,6 +22,11 @@ const getSumbanganById = async (req, res, next) => {
 const createSumbangan = async (req, res, next) => {
   try {
     const params = req.body;
+    if (params.judul == "" || "judul" in params == false) {
+      return res.status(400).json({
+        message: "title cannot be empty",
+      });
+    }
     const data = await sumbanganServices.createSumbangan(params);
     return res.status(201).json({ data, message: "Data created" });
   } catch (err) {
@@ -35,6 +40,11 @@ const updateSumbangan = async (req, res, next) => {
       id: req.params.id,
       body: req.body,
     };
+    if (params.body.judul == "" || "judul" in params.body == false) {
+      return res.status(400).json({
+        message: "title cannot be empty",
+      });
+    }
     const data = await sumbanganServices.updateSumbangan(params);
     return res.status(200).json({ data, message: "Data updated" });
   } catch (err) {

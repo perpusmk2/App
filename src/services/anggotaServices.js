@@ -2,7 +2,9 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getAllAnggota = async () => {
-  const data = await prisma.anggota.findMany({});
+  const data = await prisma.anggota.findMany({
+    orderBy: { id: "asc" },
+  });
   return data;
 };
 

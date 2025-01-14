@@ -2,7 +2,9 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getAllPenerbit = async () => {
-  const data = await prisma.penerbit.findMany({});
+  const data = await prisma.penerbit.findMany({
+    orderBy: { id: "asc" },
+  });
   if (!data) {
     throw { name: "ErrorNotFound", message: "table is empty" };
   }

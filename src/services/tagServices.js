@@ -3,7 +3,9 @@ const { get } = require("../routes/tagRoutes");
 const prisma = new PrismaClient();
 
 const getAllTag = async () => {
-  const data = await prisma.tag.findMany({});
+  const data = await prisma.tag.findMany({
+    orderBy: { id: "asc" },
+  });
   if (!data) {
     throw { name: "ErrorNotFound", message: "table is empty" };
   }

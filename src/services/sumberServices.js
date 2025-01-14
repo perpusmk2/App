@@ -2,7 +2,9 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getAllSumber = async () => {
-  const data = await prisma.sumberDana.findMany({});
+  const data = await prisma.sumberDana.findMany({
+    orderBy: { id: "asc" },
+  });
   if (!data) {
     throw { name: "ErrorNotFound", message: "table is empty" };
   }
