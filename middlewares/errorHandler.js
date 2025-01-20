@@ -13,6 +13,11 @@ const errorHandler = (err, req, res, next) => {
       name: "Error Bad Request",
       message: err.message || "Bad Request",
     });
+  } else if (err.name === "MissingFile") {
+    res.status(400).json({
+      name: "Missing File",
+      message: err.message || "Missing File",
+    });
   }
 };
 
