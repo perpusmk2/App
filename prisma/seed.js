@@ -105,23 +105,6 @@ async function main() {
           ],
         },
       },
-      fotoBuku: {
-        createMany: {
-          data: [
-            {
-              foto: "buku1.jpg",
-            },
-            {
-              foto: "buku2.jpg",
-              tipe: "DAFTAR_ISI",
-            },
-            {
-              foto: "buku3.jpg",
-              tipe: "SAMPUL_BELAKANG",
-            },
-          ],
-        },
-      },
     },
     {
       judul: "Buku 2",
@@ -149,27 +132,6 @@ async function main() {
           ],
         },
       },
-      fotoBuku: {
-        createMany: {
-          data: [
-            {
-              foto: "buku4.jpg",
-            },
-            {
-              foto: "buku5.jpg",
-              tipe: "DAFTAR_ISI",
-            },
-            {
-              foto: "buku5.jpg",
-              tipe: "DAFTAR_ISI",
-            },
-            {
-              foto: "buku6.jpg",
-              tipe: "SAMPUL_BELAKANG",
-            },
-          ],
-        },
-      },
     },
     {
       judul: "Buku 3",
@@ -189,27 +151,6 @@ async function main() {
           data: [
             {
               tag_id: 3,
-            },
-          ],
-        },
-      },
-      fotoBuku: {
-        createMany: {
-          data: [
-            {
-              foto: "buku7.jpg",
-            },
-            {
-              foto: "buku8.jpg",
-              tipe: "DAFTAR_ISI",
-            },
-            {
-              foto: "buku9.jpg",
-              tipe: "DAFTAR_ISI",
-            },
-            {
-              foto: "buku10.jpg",
-              tipe: "SAMPUL_BELAKANG",
             },
           ],
         },

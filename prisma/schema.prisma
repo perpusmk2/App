@@ -17,7 +17,7 @@ model Anggota {
   id               Int             @id @default(autoincrement())
   kategori         Kategori        @default(SISWA)
   nama             String
-  username         String?          @unique
+  username         String?         @unique
   password         String?
   foto             String?
   telepon          String?
@@ -45,9 +45,9 @@ model Buku{
   nomor_induk       String?
   judul             String
   pengarang         String?
-  penerbit          Penerbit?      @relation(fields: [penerbit_id], references: [id])
+  penerbit          Penerbit?     @relation(fields: [penerbit_id], references: [id])
   penerbit_id       Int?
-  isbn              String?
+  isbn              String?       @unique
   tahun_terbit      String?
   harga             Int
   sumber_dana       SumberDana    @relation(fields: [sumber_dana_id], references: [id])
@@ -56,7 +56,7 @@ model Buku{
   tahun_masuk       DateTime?
   eksemplar         Eksemplar[]
   bukuTag           BukuTag[]
-  fotoBuku          FotoBuku[]
+  foto              String?
   dibuat            DateTime      @default(now())
   diperbarui        DateTime      @updatedAt
 }
@@ -65,14 +65,6 @@ model SumberDana{
   id        Int         @id @default(autoincrement())
   nama      String
   buku      Buku[]
-}
-
-model FotoBuku{
-  id        Int @id   @default(autoincrement())
-  buku      Buku      @relation(fields: [buku_id], references: [id])
-  buku_id   Int
-  foto      String
-  tipe      TipeFoto  @default(SAMPUL)
 }
 
 enum TipeFoto{

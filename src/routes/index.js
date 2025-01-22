@@ -25,4 +25,7 @@ router.use(
   express.static(path.join(__dirname, "../../public/uploads"))
 );
 
+const bukuRoute = require("./bukuRoutes");
+router.use("/api/buku", bukuRoute);
+
 module.exports = router;
