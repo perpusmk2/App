@@ -9,8 +9,8 @@ const path = require("path");
 
 const folderPath = path.join(__dirname, "./public/tmp");
 
-cron.schedule("*/1 * * * *", () => {
-  console.log("running a task every 2 minutes");
+cron.schedule("0 0/2 * * *", () => {
+  console.log("running a task every 2 hours");
   clearFolder(folderPath);
 });
 

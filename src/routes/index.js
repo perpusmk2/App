@@ -28,4 +28,7 @@ router.use(
 const bukuRoute = require("./bukuRoutes");
 router.use("/api/buku", bukuRoute);
 
+const bukuTagRoute = require("./bukuTagRoutes");
+router.use("/api/bukuTag", bukuTagRoute);
+
 module.exports = router;
