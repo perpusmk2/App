@@ -31,4 +31,7 @@ router.use("/api/buku", bukuRoute);
 const bukuTagRoute = require("./bukuTagRoutes");
 router.use("/api/bukuTag", bukuTagRoute);
 
+const peminjamanRoute = require("./peminjamanRoutes");
+router.use("/api/peminjaman", peminjamanRoute);
+
 module.exports = router;
